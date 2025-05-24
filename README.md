@@ -2,7 +2,11 @@
 A simple terminal tool to scrape and download Nintendo Wii NKit RVZ files from [myrient.erista.me](https://myrient.erista.me).
 ---
 ## ❗Reminder❗
-No Piracy, Piracy is super bad for our Glorious Nintendo.
+
+- No Piracy, Piracy is super bad for our Glorious Nintendo.
+- This tool scrapes and downloads files from [myrient.erista.me](https://myrient.erista.me)
+- I Developed this to make Downloading quicker and easier, but if this program goes against website TOS, just send me a message and ill take it down.
+- It says "This means not limiting users from being able to play their favorite video game or simply having an archive for themselves", which i took as free reign to develop this tool.
 ---
 ## Features
 

@@ -24,10 +24,10 @@ A simple terminal tool to scrape and download Nintendo Wii NKit RVZ game files f
 -  Eventually (someday), i will add a sort to only check depending on the Region you select
 -  I also want to add a GUI, but that looks annoying so dont expect it anytime soon
  
---- 
+---
+
 ## Usage
 
 1. Run the script:
    ```bash
    python downloader.py
-![Code_3FgeebcGVz](https://github.com/user-attachments/assets/2b8d3337-9d60-4cac-a6d3-7d1f7b741499)

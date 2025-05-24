@@ -1,7 +1,7 @@
 # Wii NKit RVZ Downloader 🎮📥
 
-A simple terminal tool to scrape and download Nintendo Wii NKit RVZ game files from [myrient.erista.me](https://myrient.erista.me).
-Guys
+A simple terminal tool to scrape and download Nintendo Wii NKit RVZ files from [myrient.erista.me](https://myrient.erista.me).
+
 ---
 ##❗Reminder❗
 No Piracy, Piracy is super bad for our Glorious Nintendo.

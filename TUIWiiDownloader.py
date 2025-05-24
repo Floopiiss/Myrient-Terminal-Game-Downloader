@@ -56,10 +56,10 @@ def sort_request(sort):
             try:
                 choice = int(input("Enter Number: "))
             except ValueError:
-                print("Why did you enter something other than a number, fucking baghead")
+                print("Why did you enter something other than a number, are u stupid?")
                 continue
             if choice > list_amount or choice < 1:
-                print("Why did you enter a number thats not on the menu, fucking baghead")
+                print("Why did you enter a number thats not on the menu, are u stupid?")
                 continue
             else:
                 index = choice - 1

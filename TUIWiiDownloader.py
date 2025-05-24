@@ -126,9 +126,3 @@ if game_name is None or download_url is None:
     print("Exiting Program...")
 else:
     download_file(download_url, game_name)
-
-
-
-
-
-

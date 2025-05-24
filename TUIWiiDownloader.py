@@ -42,10 +42,10 @@ def sort_request(sort):
     the function with None Values, which will then come into play later on the program.
     """
     for a in soup.find_all("a"):
-        href = a.get("href")
+        href = a.get("href") 
         text = a.get_text(strip=True)
 
-        if href and sort.lower() in href.lower():
+        if href and sort.lower() in href.lower(): 
             matches.append((text, href))
 
     if matches:

@@ -26,7 +26,7 @@ A simple terminal tool to scrape and download Nintendo Wii NKit RVZ game files f
 
 ---
 
-## requirements.txt
+## Requirements
 
 - beautifulsoup4==4.13.4
 - bs4==0.0.2

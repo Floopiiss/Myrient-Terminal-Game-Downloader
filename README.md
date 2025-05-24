@@ -23,7 +23,23 @@ A simple terminal tool to scrape and download Nintendo Wii NKit RVZ game files f
 -  There is probably something that can crash, i couldnt be arsed to check all of it tho.
 -  Eventually (someday), i will add a sort to only check depending on the Region you select
 -  I also want to add a GUI, but that looks annoying so dont expect it anytime soon
- 
+
+---
+
+# requirements.txt
+
+beautifulsoup4==4.13.4
+bs4==0.0.2
+certifi==2025.4.26
+charset-normalizer==3.4.2
+colorama==0.4.6
+idna==3.10
+requests==2.32.3
+soupsieve==2.7
+tqdm==4.67.1
+typing_extensions==4.13.2
+urllib3==2.4.0
+
 ---
 
 ## Usage

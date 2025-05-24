@@ -8,7 +8,7 @@ URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RV
 r = requests.get(URL)
 soup = BeautifulSoup(r.content, 'html.parser')
 
-links = [a.get('href') for a in soup.find_all('a') if a.get('href')]
+links = [a.get('href') for a in soup.find_all('a') if a.get('href')] # type: ignore - For some reason, it thinks there is an error here for no reason
 
 matches = []
 
@@ -42,10 +42,10 @@ def sort_request(sort):
     the function with None Values, which will then come into play later on the program.
     """
     for a in soup.find_all("a"):
-        href = a.get("href") 
+        href = a.get("href")  # type: ignore - For some reason, it thinks there is an error here for no reason
         text = a.get_text(strip=True)
 
-        if href and sort.lower() in href.lower(): 
+        if href and sort.lower() in href.lower():  # type: ignore - For some reason, it thinks there is an error here for no reason
             matches.append((text, href))
 
     if matches:

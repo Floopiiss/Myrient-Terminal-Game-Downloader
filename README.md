@@ -47,4 +47,4 @@ No Piracy, Piracy is super bad for our Glorious Nintendo.
 1. Run the script:
 
    ```bash
-   python downloader.py
+   python TUIWiiDownloader.py

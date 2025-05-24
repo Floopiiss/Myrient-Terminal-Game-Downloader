@@ -1,9 +1,13 @@
 # Wii NKit RVZ Downloader 🎮📥
-
-A simple terminal tool to scrape and download Nintendo Wii NKit RVZ game files from [myrient.erista.me](https://myrient.erista.me).
-
+A simple terminal tool to scrape and download Nintendo Wii NKit RVZ files from [myrient.erista.me](https://myrient.erista.me).
 ---
+## ❗Reminder❗
 
+- No Piracy, Piracy is super bad for our Glorious Nintendo.
+- This tool scrapes and downloads files from [myrient.erista.me](https://myrient.erista.me)
+- I Developed this to make Downloading quicker and easier, but if this program goes against website TOS, just send me a message and ill take it down.
+- It says "This means not limiting users from being able to play their favorite video game or simply having an archive for themselves", which i took as free reign to develop this tool.
+---
 ## Features
 
 - Scrapes the latest game list automatically 🔍  
@@ -23,11 +27,28 @@ A simple terminal tool to scrape and download Nintendo Wii NKit RVZ game files f
 -  There is probably something that can crash, i couldnt be arsed to check all of it tho.
 -  Eventually (someday), i will add a sort to only check depending on the Region you select
 -  I also want to add a GUI, but that looks annoying so dont expect it anytime soon
- 
+
+---
+
+## Requirements
+
+- beautifulsoup4 >= 4.13.4
+- bs4 >= 0.0.2
+- certifi >= 2025.4.26
+- charset-normalizer >= 3.4.2
+- colorama >= 0.4.6
+- idna >= 3.10
+- requests >= 2.32.3
+- soupsieve >= 2.7
+- tqdm >= 4.67.1
+- typing_extensions >= 4.13.2
+- urllib3 >= 2.4.0
+
 ---
 
 ## Usage
 
 1. Run the script:
+
    ```bash
-   python downloader.py
+   python TUIWiiDownloader.py

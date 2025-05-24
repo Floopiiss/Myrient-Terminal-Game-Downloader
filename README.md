@@ -26,19 +26,19 @@ A simple terminal tool to scrape and download Nintendo Wii NKit RVZ game files f
 
 ---
 
-# requirements.txt
+## requirements.txt
 
-beautifulsoup4==4.13.4
-bs4==0.0.2
-certifi==2025.4.26
-charset-normalizer==3.4.2
-colorama==0.4.6
-idna==3.10
-requests==2.32.3
-soupsieve==2.7
-tqdm==4.67.1
-typing_extensions==4.13.2
-urllib3==2.4.0
+- beautifulsoup4==4.13.4
+- bs4==0.0.2
+- certifi==2025.4.26
+- charset-normalizer==3.4.2
+- colorama==0.4.6
+- idna==3.10
+- requests==2.32.3
+- soupsieve==2.7
+- tqdm==4.67.1
+- typing_extensions==4.13.2
+- urllib3==2.4.0
 
 ---
 

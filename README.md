@@ -45,5 +45,6 @@ No Piracy, Piracy is super bad for our Glorious Nintendo.
 ## Usage
 
 1. Run the script:
+
    ```bash
    python downloader.py

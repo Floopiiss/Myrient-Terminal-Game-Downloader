@@ -14,6 +14,13 @@ XBOX_URL = "https://myrient.erista.me/files/Redump/Microsoft%20-%20Xbox/"
 
 
 def get_correct_url():
+    """
+    The function `get_correct_url` allows the user to select a gaming platform and then a specific
+    console from that platform to return the corresponding URL.
+    :return: The code is returning different URLs based on the user's input for the gaming platform and
+    the specific console within that platform. The URLs are returned based on the choices made by the
+    user for Nintendo, Sony, and Xbox platforms, and the specific consoles within those platforms.
+    """
     while True:
         print("#######################")
         print("###### Platforms ######")

@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 import os
 
-buffer_size = 1024
 URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/?C=N&O=A"
 r = requests.get(URL)
 soup = BeautifulSoup(r.content, 'html.parser')

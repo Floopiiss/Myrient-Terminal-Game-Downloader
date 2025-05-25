@@ -11,7 +11,7 @@ A simple terminal tool to scrape and download game files from [myrient.erista.me
 ## Features
 
 - Scrapes the latest game list automatically 🔍  
-- Search games by name (case-insensitive, fuzzy)  
+- Search games by name (case-insensitive, but the search is kind of terrible, just enter one word from the title and search through the list)  
 - Interactive selection of matching games  
 - Downloads with progress bar ⏳  
 - Handles download interruptions gracefully ❌  

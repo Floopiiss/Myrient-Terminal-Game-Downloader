@@ -81,7 +81,7 @@
  [],
  False,
  False,
- 1748101648,
+ 1748173251,
  [('run.exe',
    'C:\\Users\\Floop\\Documents\\Nintendo Wii '
    'Downloader\\Wii-Rom-Downloader\\.venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',

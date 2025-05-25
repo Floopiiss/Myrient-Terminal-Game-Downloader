@@ -126,7 +126,7 @@ def get_sort_value():
     enter a game name.
     """
     print("Sometimes the Game Names are kind of finnicky, just play around with how its spelt")
-    sort = input("Enter Game Name: ")
+    sort = input("Enter Game Name => ")
     
     return sort
 
@@ -157,7 +157,7 @@ def sort_request(sort):
             print(f"{number}. {name[0]}")
         while True:
             try:
-                choice = int(input("Enter Number: "))
+                choice = int(input("Enter Number => "))
             except ValueError:
                 print("Why did you enter something other than a number, are u stupid?")
                 continue

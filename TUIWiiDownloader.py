@@ -3,13 +3,110 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 import os
 
-URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/?C=N&O=A"
+GC_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/"
+WII_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/?C=N&O=A"
+WII_U_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20U%20-%20WUX/"
+PS1_URL = "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation/"
+PS2_URL = "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation%202/"
+PS3_URL = "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation%203/"
+XBOX360_URL = "https://myrient.erista.me/files/Redump/Microsoft%20-%20Xbox%20360/"
+XBOX_URL = "https://myrient.erista.me/files/Redump/Microsoft%20-%20Xbox/"
+
+
+def get_correct_url():
+    while True:
+        print("#######################")
+        print("###### Platforms ######")
+        print("#######################")
+        print("1. Nintendo")
+        print("2. Sony")
+        print("3. Xbox")
+
+        try:
+            choice = int(input("Number => "))
+        except ValueError:
+            print("Enter a Number from the List, Numbnut.")
+            continue
+
+        if choice == 1:
+            print("######################")
+            print("###### Nintendo ######")
+            print("######################")
+            print("1. Gamecube")
+            print("2. Nintendo Wii")
+            print("3. Nintendo Wii U")
+            try:
+                nin_choice = int(input("Number => "))
+            except ValueError:
+                print("Enter a Number from the List, Numbnut.")
+                continue
+            
+            if nin_choice == 1:
+                return GC_URL
+            elif nin_choice == 2:
+                return WII_URL
+            elif nin_choice == 3:
+                return WII_U_URL
+            else:
+                print("Enter a Number from the List, Numbnut.")
+                continue
+
+        elif choice == 2:
+            print("################")
+            print("###### Sony ######")
+            print("################")
+            print("1. PlayStation 1")
+            print("2. PlayStation 2")
+            print("3. PlayStation 3")
+            try:
+                sony_choice = int(input("Number => "))
+            except ValueError:
+                print("Enter a Number from the List, Numbnut.")
+                continue
+            
+            if sony_choice == 1:
+                return PS1_URL
+            elif sony_choice == 2:
+                return PS2_URL
+            elif sony_choice == 3:
+                return PS3_URL
+            else:
+                print("Enter a Number from the List, Numbnut.")
+                continue
+
+        elif choice == 3:
+            print("################")
+            print("###### Xbox ######")
+            print("################")
+            print("1. Xbox Original")
+            print("2. Xbox 360")
+            try:
+                xbox_choice = int(input("Number => "))
+            except ValueError:
+                print("Enter a Number from the List, Numbnut.")
+                continue
+            
+            if xbox_choice == 1:
+                return XBOX_URL
+            elif xbox_choice == 2:
+                return XBOX360_URL
+            else:
+                print("Enter a Number from the List, Numbnut.")
+                continue
+
+        else:
+            print("Enter a Number from the List, Numbnut.")
+            continue
+
+URL = get_correct_url()
+
 r = requests.get(URL)
 soup = BeautifulSoup(r.content, 'html.parser')
 
 links = [a.get('href') for a in soup.find_all('a') if a.get('href')] # type: ignore - For some reason, it thinks there is an error here for no reason
 
 matches = []
+
 
 print("#################################################")
 print("###### Scrapes Data From Myrient.erista.me ######")

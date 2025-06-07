@@ -60,15 +60,23 @@ urllib3==2.4.0
 
 ## Usage (TUI)
 
-1. Run the script:
+Run the script:
 
    ```bash
    python TUIROMDownloader.py
    ```
-   ## OR
 
-1. Run  the Executable from dist folder or from releases:
+   # OR
+
+Run the Executable from dist folder or from releases:
 
 ## Usage (GUI)
-1.
+1. Run the script:
+
+   ```bash
+   python GUIROMDownloader.py
+   ```
    
+   # OR
+
+Run the Executable from dist folder or from releases

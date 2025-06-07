@@ -16,7 +16,7 @@ A simple terminal (AND GRAPHICAL, THANKS TO V3) tool to scrape and download game
 - Downloads with progress bar ⏳  
 - Handles download interruptions gracefully ❌  
 - Downloads the ZIP Content to the same Directory
-- Good Enough Validation ¯\_(ツ)_/¯ , don't purposefully break it
+- Good Enough Validation, don't purposefully break it
 - Features Nintendo, Sony, and Xbox Games
 
 ---

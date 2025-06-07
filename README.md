@@ -1,4 +1,4 @@
-# Myrient TUI Game Downloader 🎮📥
+# Myrient TUI (AND GUI) Game Downloader 🎮📥
 A simple terminal tool to scrape and download game files from [myrient.erista.me](https://myrient.erista.me).
 ---
 ## ❗Reminder❗
@@ -33,23 +33,50 @@ A simple terminal tool to scrape and download game files from [myrient.erista.me
 
 ## Requirements
 
-- beautifulsoup4 >= 4.13.4
-- bs4 >= 0.0.2
-- certifi >= 2025.4.26
-- charset-normalizer >= 3.4.2
-- colorama >= 0.4.6
-- idna >= 3.10
-- requests >= 2.32.3
-- soupsieve >= 2.7
-- tqdm >= 4.67.1
-- typing_extensions >= 4.13.2
-- urllib3 >= 2.4.0
+altgraph==0.17.4  
+beautifulsoup4==4.13.4  
+bs4==0.0.2  
+certifi==2025.4.26  
+charset-normalizer==3.4.2  
+colorama==0.4.6  
+idna==3.10  
+packaging==25.0  
+pefile==2024.8.26  
+pyasn1==0.6.1  
+pyinstaller==6.13.0  
+pyinstaller-hooks-contrib==2025.4  
+pywin32-ctypes==0.2.3  
+requests==2.32.3  
+rsa==4.9.1  
+setuptools==80.8.0  
+soupsieve==2.7  
+sv-ttk==2.6.0  
+thread==2.0.5  
+tqdm==4.67.1  
+typing_extensions==4.13.2  
+urllib3==2.4.0 
 
 ---
 
-## Usage
+## Usage (TUI)
 
+Run the script:
+
+   ```bash
+   python TUIROMDownloader.py
+   ```
+
+   # OR
+
+Run the Executable from dist folder or from releases:
+
+## Usage (GUI)
 1. Run the script:
 
    ```bash
-   python TUIWiiDownloader.py
+   python GUIROMDownloader.py
+   ```
+   
+   # OR
+
+Run the Executable from dist folder or from releases

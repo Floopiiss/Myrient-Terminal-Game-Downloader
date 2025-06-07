@@ -58,9 +58,17 @@ urllib3==2.4.0
 
 ---
 
-## Usage
+## Usage (TUI)
 
 1. Run the script:
 
    ```bash
-   python TUIWiiDownloader.py
+   python TUIROMDownloader.py
+   ```
+   ## OR
+
+1. Run  the Executable from dist folder or from releases:
+
+## Usage (GUI)
+1.
+   

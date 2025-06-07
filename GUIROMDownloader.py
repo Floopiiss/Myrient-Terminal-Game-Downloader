@@ -49,10 +49,19 @@ platform_var = tkinter.StringVar(root, value="Select an Option")
 console_var = tkinter.StringVar(root, value="Select an Option")
 search_var = tkinter.StringVar(root)
 
-platform_menu = ttk.OptionMenu(root, platform_var,"Select an Option", *platforms_list).pack(side="left", anchor="n", padx=15, pady=15)
-nin_menu = ttk.OptionMenu(root, console_var,"Select an Option", *NIN_LIST) 
-sony_menu = ttk.OptionMenu(root, console_var,"Select an Option", *SONY_LIST) 
-xbox_menu = ttk.OptionMenu(root, console_var,"Select an Option", *XBOX_LIST) 
+platform_menu = ttk.OptionMenu(root, platform_var,"Select an Option", *platforms_list)
+platform_menu.config(width=20)
+platform_menu.pack(side="left", anchor="n", padx=15, pady=15)
+
+nin_menu = ttk.OptionMenu(root, console_var,"Select an Option", *NIN_LIST)
+nin_menu.config(width=20)
+
+sony_menu = ttk.OptionMenu(root, console_var,"Select an Option", *SONY_LIST)
+sony_menu.config(width=20)
+
+xbox_menu = ttk.OptionMenu(root, console_var,"Select an Option", *XBOX_LIST)
+xbox_menu.config(width=20)
+
 
 search_entry = ttk.Entry(root, textvariable=search_var)
 add_placeholder(search_entry, "Search Game...")
@@ -144,13 +153,17 @@ def check_ready_to_show_listbox(*args):
         game_list.pack_forget()
 
 def update_search_results(*args):
-    search_term = search_var.get().lower()
-    game_list.delete(0, tkinter.END)
-    
-    filtered = [match for match in all_matches if search_term in match[0].lower()]
-    
-    for name, href in filtered:
-        game_list.insert(tkinter.END, name)
+    query = search_var.get().strip().lower()
+
+    if query == "" or query == "search game...":
+        game_list.delete(0, tkinter.END)
+        for game in all_matches:
+            game_list.insert(tkinter.END, game[0])
+    else:
+        filtered = [game for game in all_matches if query in game[0].lower()]
+        game_list.delete(0, tkinter.END)
+        for game in filtered:
+            game_list.insert(tkinter.END, game[0])
 
 if __name__ == "__main__":
     platform_var.trace_add("write", update_console_menu)

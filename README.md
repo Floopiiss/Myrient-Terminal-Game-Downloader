@@ -66,7 +66,7 @@ Run the script:
    python TUIROMDownloader.py
    ```
 
-   # OR
+# OR
 
 Run the Executable from dist folder or from releases:
 
@@ -77,6 +77,6 @@ Run the Executable from dist folder or from releases:
    python GUIROMDownloader.py
    ```
    
-   # OR
+# OR
 
 Run the Executable from dist folder or from releases

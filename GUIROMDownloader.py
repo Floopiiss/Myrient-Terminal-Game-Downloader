@@ -1,14 +1,26 @@
 import tkinter
 from tkinter import ttk
+import requests
+from bs4 import BeautifulSoup
+from tqdm import tqdm
+import os
 
 import sv_ttk
 
+URLS = {
+    "Gamecube": "https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/",
+    "Nintendo Wii": "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/?C=N&O=A",
+    "Nintendo Wii U": "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20U%20-%20WUX/",
+    "Playstation 1": "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation/",
+    "Playstation 2": "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation%202/",
+    "Playstation 3": "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation%203/",
+    "Xbox 360": "https://myrient.erista.me/files/Redump/Microsoft%20-%20Xbox%20360/",
+    "Original Xbox": "https://myrient.erista.me/files/Redump/Microsoft%20-%20Xbox/"
+}
+
 root = tkinter.Tk()
 
-root.minsize(500, 500)
-
-title_text = ttk.Label(root, text="ROM Downloader",
-                       font=("Helvetica", 24)).pack(side = "top", pady = 10)
+root.minsize(800, 900)    
 
 def add_placeholder(entry, placeholder_text):
     entry.insert(0, placeholder_text)
@@ -31,45 +43,47 @@ platforms_list = ["Nintendo", "Playstation", "Xbox"]
 NIN_LIST = ["Gamecube", "Nintendo Wii", "Nintendo Wii U"]
 SONY_LIST = ["Playstation 1", "Playstation 2", "Playstation 3"]
 XBOX_LIST = ["Original Xbox", "Xbox 360"]
+all_matches = []
 
 platform_var = tkinter.StringVar(root, value="Select an Option")
-nin_var = tkinter.StringVar(root, value="Select an Option")
-xbox_var = tkinter.StringVar(root, value="Select an Option")
-sony_var = tkinter.StringVar(root, value="Select an Option")
+console_var = tkinter.StringVar(root, value="Select an Option")
 search_var = tkinter.StringVar(root)
 
-
 platform_menu = ttk.OptionMenu(root, platform_var,"Select an Option", *platforms_list).pack(side="left", anchor="n", padx=15, pady=15)
-nin_menu = ttk.OptionMenu(root, nin_var,"Select an Option", *NIN_LIST) 
-sony_menu = ttk.OptionMenu(root, xbox_var,"Select an Option", *SONY_LIST) 
-xbox_menu = ttk.OptionMenu(root, sony_var,"Select an Option", *XBOX_LIST) 
+nin_menu = ttk.OptionMenu(root, console_var,"Select an Option", *NIN_LIST) 
+sony_menu = ttk.OptionMenu(root, console_var,"Select an Option", *SONY_LIST) 
+xbox_menu = ttk.OptionMenu(root, console_var,"Select an Option", *XBOX_LIST) 
 
-search_label = ttk.Label(root, text="Search Game:")
 search_entry = ttk.Entry(root, textvariable=search_var)
 add_placeholder(search_entry, "Search Game...")
 
-game_list = tkinter.Listbox(root, height=50, width=25, bg="black",activestyle="dotbox",fg="white")
+game_list = tkinter.Listbox(root, height=50, width=50, bg="#1c1c1c",activestyle="dotbox",fg="white")
+
+def get_correct_url(*args):
+    console = console_var.get()
+    
+    if console in URLS:
+        URL = URLS[console]
+        return URL
+    else:
+        return None
 
 def check_ready_for_search():
     platform = platform_var.get()
-    nin = nin_var.get()
-    sony = sony_var.get()
-    xbox = xbox_var.get()
+    console = console_var.get()
 
     show_search = False
 
-    if platform == "Nintendo" and nin in NIN_LIST:
+    if platform == "Nintendo" and console in NIN_LIST:
         show_search = True
-    elif platform == "Playstation" and sony in SONY_LIST:
+    elif platform == "Playstation" and console in SONY_LIST:
         show_search = True
-    elif platform == "Xbox" and xbox in XBOX_LIST:
+    elif platform == "Xbox" and console in XBOX_LIST:
         show_search = True
 
     if show_search:
-#        search_label.pack(side="top", anchor="n")
         search_entry.pack(side="top", anchor="n", pady=15)
     else:
-        search_label.pack_forget()
         search_entry.pack_forget()
 
 def update_console_menu(*args):
@@ -88,16 +102,67 @@ def update_console_menu(*args):
         
     check_ready_for_search()
 
+def on_platform_change(*args):
+    console_var.set("Select an Option")
+    
+
+def fetch_links_for_console(console):
+    url = get_correct_url() 
+    if url is None:
+        return
+
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, 'html.parser')
+    
+    all_matches.clear()
+    
+    for a in soup.find_all("a"):
+        href = a.get("href") # type: ignore
+        text = a.get_text(strip=True)
+        if href and href not in ("../", "./", "/", ""):
+            if href.lower().endswith((".iso", ".nkit", ".rvz", ".zip", ".7z", ".rar")): # type: ignore
+                all_matches.append((text, href))
+            
+    update_listbox_with_matches()
+            
+def on_console_selected(*args):
+    fetch_links_for_console(console_var.get())
+
+def update_listbox_with_matches():
+    game_list.delete(0, tkinter.END)
+
+    for text, href in all_matches:
+        game_list.insert(tkinter.END, text) 
+
+def check_ready_to_show_listbox(*args):
+    platform = platform_var.get()
+    console = console_var.get()
+    
+    if platform != "Select an Option" and console != "Select an Option":
+        game_list.pack(side="bottom", fill="both", expand=True, padx=0, pady=0)
+    else:
+        game_list.pack_forget()
+
 def update_search_results(*args):
-    query = search_var.get().lower()
+    search_term = search_var.get().lower()
+    game_list.delete(0, tkinter.END)
+    
+    filtered = [match for match in all_matches if search_term in match[0].lower()]
+    
+    for name, href in filtered:
+        game_list.insert(tkinter.END, name)
 
 if __name__ == "__main__":
     platform_var.trace_add("write", update_console_menu)
-    nin_var.trace_add("write", lambda *args: check_ready_for_search())
-    sony_var.trace_add("write", lambda *args: check_ready_for_search())
-    xbox_var.trace_add("write", lambda *args: check_ready_for_search())
+    console_var.trace_add("write", lambda *args: check_ready_for_search())
     platform_var.trace_add("write", update_console_menu)
+    platform_var.trace_add("write", on_platform_change)
+    console_var.trace_add("write", lambda *args: print(get_correct_url()))
+    console_var.trace_add("write", on_console_selected)    
+    platform_var.trace_add("write", check_ready_to_show_listbox)
+    console_var.trace_add("write", check_ready_to_show_listbox)
     search_var.trace_add("write", update_search_results)
+    
     sv_ttk.set_theme("dark")
     root.mainloop()
 

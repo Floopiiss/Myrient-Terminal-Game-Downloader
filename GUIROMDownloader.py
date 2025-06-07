@@ -36,22 +36,22 @@ bottom_frame.pack(side="top", fill="x")
 
 root.minsize(800, 900)    
 
+def on_focus_in(event, entry, placeholder_text):
+    if entry.get() == placeholder_text:
+        entry.delete(0, tkinter.END)
+        entry.config(foreground='white')
+
+def on_focus_out(event, entry, placeholder_text):
+    if not entry.get():
+        entry.insert(0, placeholder_text)
+        entry.config(foreground='grey')
+
 def add_placeholder(entry, placeholder_text):
     entry.insert(0, placeholder_text)
     entry.config(foreground='grey')
 
-    def on_focus_in(event):
-        if entry.get() == placeholder_text:
-            entry.delete(0, tkinter.END)
-            entry.config(foreground='white')
-
-    def on_focus_out(event):
-        if not entry.get():
-            entry.insert(0, placeholder_text)
-            entry.config(foreground='grey')
-
-    entry.bind("<FocusIn>", on_focus_in)
-    entry.bind("<FocusOut>", on_focus_out)
+    entry.bind("<FocusIn>", lambda event: on_focus_in(event, entry, placeholder_text))
+    entry.bind("<FocusOut>", lambda event: on_focus_out(event, entry, placeholder_text))
 
 def get_correct_url(*args):
     console = console_var.get()

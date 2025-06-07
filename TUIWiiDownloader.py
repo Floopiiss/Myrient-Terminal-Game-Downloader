@@ -4,7 +4,7 @@ from tqdm import tqdm
 import os
 
 GC_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/"
-WII_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/?C=N&O=A"
+WII_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/"
 WII_U_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20U%20-%20WUX/"
 PS1_URL = "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation/"
 PS2_URL = "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation%202/"
@@ -191,6 +191,7 @@ def download_file(url, output_path=None):
         output_path = url.split("/")[-1]
 
     try:
+        print(url)
         response = requests.get(url, stream=True, timeout=10)
         response.raise_for_status()
         total_size = int(response.headers.get('content-length', 0))

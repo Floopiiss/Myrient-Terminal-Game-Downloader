@@ -2,14 +2,14 @@ import tkinter
 from tkinter import ttk
 import requests
 from bs4 import BeautifulSoup
-from tqdm import tqdm
-import os
+import threading
+import queue
 
 import sv_ttk
 
 URLS = {
     "Gamecube": "https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/",
-    "Nintendo Wii": "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/?C=N&O=A",
+    "Nintendo Wii": "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/",
     "Nintendo Wii U": "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20U%20-%20WUX/",
     "Playstation 1": "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation/",
     "Playstation 2": "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation%202/",
@@ -19,6 +19,20 @@ URLS = {
 }
 
 root = tkinter.Tk()
+
+root.title("Myrient Frontend - Downloading Roms")
+
+logo = tkinter.PhotoImage(file="src/logo.png")
+root.iconphoto(False, logo)
+
+top_frame = tkinter.Frame(root)
+top_frame.pack(side="top", fill="x")
+
+middle_frame = tkinter.Frame(root)
+middle_frame.pack(side="top", fill="both", expand=True)
+
+bottom_frame = tkinter.Frame(root)
+bottom_frame.pack(side="top", fill="x")
 
 root.minsize(800, 900)    
 
@@ -39,11 +53,21 @@ def add_placeholder(entry, placeholder_text):
     entry.bind("<FocusIn>", on_focus_in)
     entry.bind("<FocusOut>", on_focus_out)
 
+def get_correct_url(*args):
+    console = console_var.get()
+    
+    if console in URLS:
+        URL = URLS[console]
+        return URL
+    else:
+        return None
+
 platforms_list = ["Nintendo", "Playstation", "Xbox"]
 NIN_LIST = ["Gamecube", "Nintendo Wii", "Nintendo Wii U"]
 SONY_LIST = ["Playstation 1", "Playstation 2", "Playstation 3"]
 XBOX_LIST = ["Original Xbox", "Xbox 360"]
 all_matches = []
+right_click_target = {"name": None}
 
 platform_var = tkinter.StringVar(root, value="Select an Option")
 console_var = tkinter.StringVar(root, value="Select an Option")
@@ -51,7 +75,7 @@ search_var = tkinter.StringVar(root)
 
 platform_menu = ttk.OptionMenu(root, platform_var,"Select an Option", *platforms_list)
 platform_menu.config(width=20)
-platform_menu.pack(side="left", anchor="n", padx=15, pady=15)
+platform_menu.pack(in_=top_frame, side="left", anchor="n", padx=15, pady=15)
 
 nin_menu = ttk.OptionMenu(root, console_var,"Select an Option", *NIN_LIST)
 nin_menu.config(width=20)
@@ -62,20 +86,16 @@ sony_menu.config(width=20)
 xbox_menu = ttk.OptionMenu(root, console_var,"Select an Option", *XBOX_LIST)
 xbox_menu.config(width=20)
 
+right_click_menu = tkinter.Menu(root, tearoff=0)
+right_click_menu.add_command(label="Download", command=lambda: start_download())
 
 search_entry = ttk.Entry(root, textvariable=search_var)
 add_placeholder(search_entry, "Search Game...")
 
 game_list = tkinter.Listbox(root, height=50, width=50, bg="#1c1c1c",activestyle="dotbox",fg="white")
 
-def get_correct_url(*args):
-    console = console_var.get()
-    
-    if console in URLS:
-        URL = URLS[console]
-        return URL
-    else:
-        return None
+download_bar = ttk.Progressbar(bottom_frame, orient='horizontal', length=600, mode='determinate')
+progress_queue = queue.Queue()
 
 def check_ready_for_search():
     platform = platform_var.get()
@@ -91,7 +111,7 @@ def check_ready_for_search():
         show_search = True
 
     if show_search:
-        search_entry.pack(side="top", anchor="n", pady=15)
+        search_entry.pack(in_=top_frame, side="top", anchor="ne", pady=15, padx=15)
     else:
         search_entry.pack_forget()
 
@@ -103,11 +123,11 @@ def update_console_menu(*args):
 
     selected = platform_var.get()
     if selected == "Nintendo":
-        nin_menu.pack(side="right", anchor="n", padx=15, pady=15)
+        nin_menu.pack(in_=top_frame, side="left", anchor="n", padx=15, pady=15)
     elif selected == "Playstation":
-        sony_menu.pack(side="right", anchor="n", padx=15, pady=15)
+        sony_menu.pack(in_=top_frame, side="left", anchor="n", padx=15, pady=15)
     elif selected == "Xbox":
-        xbox_menu.pack(side="right", anchor="n", padx=15, pady=15)
+        xbox_menu.pack(in_=top_frame, side="left", anchor="n", padx=15, pady=15)
         
     check_ready_for_search()
 
@@ -115,7 +135,7 @@ def on_platform_change(*args):
     console_var.set("Select an Option")
     
 
-def fetch_links_for_console(console):
+def fetch_links_for_console(*args):
     url = get_correct_url() 
     if url is None:
         return
@@ -148,7 +168,7 @@ def check_ready_to_show_listbox(*args):
     console = console_var.get()
     
     if platform != "Select an Option" and console != "Select an Option":
-        game_list.pack(side="bottom", fill="both", expand=True, padx=0, pady=0)
+        game_list.pack(in_=middle_frame, fill="both", expand=True, padx=10, pady=10)
     else:
         game_list.pack_forget()
 
@@ -165,16 +185,84 @@ def update_search_results(*args):
         for game in filtered:
             game_list.insert(tkinter.END, game[0])
 
+def show_context_menu(event):
+    try:
+        index = game_list.nearest(event.y)
+        game_list.selection_clear(0, tkinter.END)
+        game_list.selection_set(index)
+        game_list.activate(index)
+
+        right_click_menu.tk_popup(event.x_root, event.y_root)
+    finally:
+        right_click_menu.grab_release()
+
+def on_right_click(event):
+    try:
+        index = game_list.nearest(event.y)
+        game_list.selection_clear(0, tkinter.END)
+        game_list.selection_set(index)
+        selected_game = game_list.get(index)
+        right_click_target["name"] = selected_game
+        right_click_menu.tk_popup(event.x_root, event.y_root)
+    finally:
+        right_click_menu.grab_release()
+
+game_list.bind("<Button-3>", on_right_click)
+
+def download_game_with_progress(url, output_path=None):
+    response = requests.get(url, stream=True)
+    total_size = int(response.headers.get('content-length', 0))
+    block_size = 1024
+    if output_path is None:
+        output_path = url.split("/")[-1]
+    downloaded = 0
+    
+    progress_queue.put(('set_max', total_size))
+    
+    with open(output_path, 'wb') as f:
+        for data in response.iter_content(block_size):
+            if not data:
+                break
+            f.write(data)
+            downloaded += len(data)
+            progress_queue.put(('progress', downloaded))
+    
+    progress_queue.put(('done', None))
+
+def process_queue():
+    try:
+        while True:
+            message, value = progress_queue.get_nowait()
+            if message == 'set_max':
+                download_bar['maximum'] = value
+                download_bar['value'] = 0
+                download_bar.pack(side="bottom", anchor="s", pady=5)
+            elif message == 'progress':
+                download_bar['value'] = value
+            elif message == 'done':
+                download_bar['value'] = download_bar['maximum']                
+    except queue.Empty:
+        pass
+    root.after(100, process_queue)  
+            
+def start_download():
+    name = right_click_target["name"]
+    game = next((g for g in all_matches if g[0] == name), None)
+    if game:
+        url = get_correct_url() + game[1]
+        output_path = url.split("/")[-1]
+        threading.Thread(target=download_game_with_progress, args=(url, output_path), daemon=True).start()
+        
 if __name__ == "__main__":
     platform_var.trace_add("write", update_console_menu)
     console_var.trace_add("write", lambda *args: check_ready_for_search())
-    platform_var.trace_add("write", update_console_menu)
     platform_var.trace_add("write", on_platform_change)
     console_var.trace_add("write", lambda *args: print(get_correct_url()))
     console_var.trace_add("write", on_console_selected)    
     platform_var.trace_add("write", check_ready_to_show_listbox)
     console_var.trace_add("write", check_ready_to_show_listbox)
     search_var.trace_add("write", update_search_results)
+    process_queue()
     
     sv_ttk.set_theme("dark")
     root.mainloop()

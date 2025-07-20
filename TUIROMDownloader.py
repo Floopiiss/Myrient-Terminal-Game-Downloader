@@ -3,6 +3,11 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 import os
 
+PLATFORM_LIST = ["Nintendo", "Sony", "Xbox"]
+NIN_LIST = ["Gamecube", "Nintendo Wii", "Nintendo Wii U"]
+SONY_LIST = ["Playstation 1", "Playstation 2", "Playstation 3"]
+XBOX_LIST = ["Original Xbox", "Xbox 360"]
+
 GC_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/"
 WII_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20[zstd-19-128k]/"
 WII_U_URL = "https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20U%20-%20WUX/"
@@ -12,6 +17,60 @@ PS3_URL = "https://myrient.erista.me/files/Redump/Sony%20-%20PlayStation%203/"
 XBOX360_URL = "https://myrient.erista.me/files/Redump/Microsoft%20-%20Xbox%20360/"
 XBOX_URL = "https://myrient.erista.me/files/Redump/Microsoft%20-%20Xbox/"
 
+PLAT_MSG = "#####################\n##### Platforms #####\n#####################"
+NIN_MSG = "#####################\n#### Nintendo ####\n#####################"
+SONY_MSG = "#####################\n###### Sony ######\n#####################"
+XBOX_MSG = "#####################\n###### Xbox ######\n#####################"
+
+def create_list(list, list_msg):
+    """
+    _summary_
+    Displays a numbered menu of elements from a list, prompts the user to select one,
+    and returns the selected element.
+
+    Parameters:
+        lst (list): The list of elements to display as a menu.
+        list_msg (str): A message to display before the menu.
+
+    Returns:
+        The element selected by the user, or None if the list is empty,
+        the input is invalid, or the selection is out of range.
+
+    Error Handling:
+        - If the list is empty, displays an error and returns None.
+        - If the user enters a non-integer input, displays an error and returns None.
+        - If the user selects a number outside the valid range, displays an error and returns None.
+    """
+    print(list_msg)
+    list_len = len(list)
+    for i, element in enumerate(list, start=1):
+        print(f"{i}. {element}")
+        
+    if list_len == 0:
+        print("[Error] No List to Display")
+        return None
+    
+    try:
+        user_input = int(input(f"Selection (1-{list_len}) => "))
+    except ValueError:
+        print("[Error] Enter a Whole Number")
+        return None
+    
+    index = user_input - 1
+    
+    if index < 0:
+        print("[Error] Enter a Valid Number")
+        return None
+    
+    elif index < list_len:
+        
+        currentElement = list[index]
+
+        return currentElement
+    else:
+        print("[Error] Enter a Valid Number")
+        return None
+        
 
 def get_correct_url():
     """
@@ -22,89 +81,35 @@ def get_correct_url():
     user for Nintendo, Sony, and Xbox platforms, and the specific consoles within those platforms.
     """
     while True:
-        print("#######################")
-        print("###### Platforms ######")
-        print("#######################")
-        print("1. Nintendo")
-        print("2. Sony")
-        print("3. Xbox")
-
-        try:
-            choice = int(input("Number => "))
-        except ValueError:
-            print("Enter a Number from the List, Numbnut.")
-            continue
-
-        if choice == 1:
-            print("######################")
-            print("###### Nintendo ######")
-            print("######################")
-            print("1. Gamecube")
-            print("2. Nintendo Wii")
-            print("3. Nintendo Wii U")
-            try:
-                nin_choice = int(input("Number => "))
-            except ValueError:
-                print("Enter a Number from the List, Numbnut.")
-                continue
-            
-            if nin_choice == 1:
-                return GC_URL
-            elif nin_choice == 2:
-                return WII_URL
-            elif nin_choice == 3:
-                return WII_U_URL
-            else:
-                print("Enter a Number from the List, Numbnut.")
-                continue
-
-        elif choice == 2:
-            print("################")
-            print("###### Sony ######")
-            print("################")
-            print("1. PlayStation 1")
-            print("2. PlayStation 2")
-            print("3. PlayStation 3")
-            try:
-                sony_choice = int(input("Number => "))
-            except ValueError:
-                print("Enter a Number from the List, Numbnut.")
-                continue
-            
-            if sony_choice == 1:
-                return PS1_URL
-            elif sony_choice == 2:
-                return PS2_URL
-            elif sony_choice == 3:
-                return PS3_URL
-            else:
-                print("Enter a Number from the List, Numbnut.")
-                continue
-
-        elif choice == 3:
-            print("################")
-            print("###### Xbox ######")
-            print("################")
-            print("1. Xbox Original")
-            print("2. Xbox 360")
-            try:
-                xbox_choice = int(input("Number => "))
-            except ValueError:
-                print("Enter a Number from the List, Numbnut.")
-                continue
-            
-            if xbox_choice == 1:
-                return XBOX_URL
-            elif xbox_choice == 2:
-                return XBOX360_URL
-            else:
-                print("Enter a Number from the List, Numbnut.")
-                continue
-
-        else:
-            print("Enter a Number from the List, Numbnut.")
-            continue
-
+        menuInput = create_list(PLATFORM_LIST, PLAT_MSG)
+        
+        match menuInput:
+            case "Nintendo":
+                ninInput = create_list(NIN_LIST, NIN_MSG)
+                match ninInput:
+                    case "Gamecube":
+                        return GC_URL
+                    case "Nintendo Wii":
+                        return WII_URL
+                    case "Nintendo Wii U":
+                        return WII_U_URL     
+            case "Sony": 
+                sonyInput = create_list(SONY_LIST, SONY_MSG)
+                match sonyInput:
+                    case "Playstation 1":
+                        return PS1_URL
+                    case "Playstation 2":
+                        return PS2_URL
+                    case "Playstation 3":
+                        return PS3_URL                        
+            case "Xbox":
+                xboxInput = create_list(XBOX_LIST, XBOX_MSG)
+                match xboxInput:
+                    case "Original Xbox":
+                        return XBOX_URL
+                    case "Xbox 360":
+                        return XBOX360_URL
+                        
 URL = get_correct_url()
 
 r = requests.get(URL)

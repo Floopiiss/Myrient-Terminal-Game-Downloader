@@ -1,5 +1,7 @@
-# Myrient TUI (AND GUI) Game Downloader 🎮📥
+# Myrient TUI (AND GUI) Game Downloader
 A simple terminal (AND GRAPHICAL, THANKS TO V3) tool to scrape and download game files from [myrient.erista.me](https://myrient.erista.me).
+---
+## Doesn't Work
 ---
 ## ❗Reminder❗
 
